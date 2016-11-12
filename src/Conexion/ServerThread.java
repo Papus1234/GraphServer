@@ -29,7 +29,7 @@ public class ServerThread extends Thread{
         String message=bufferedReader.readLine();
             System.out.println(message);
         while ((message=bufferedReader.readLine())!=null){
-            System.out.println("Llego mensaje"+message);
+            System.out.println("Llego mensaje de "+message);
             
         }
         //socket.close();
