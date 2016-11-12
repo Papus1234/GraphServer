@@ -5,6 +5,11 @@
  */
 package graphserver;
 
+import Conexion.Server;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Roberto
@@ -15,7 +20,13 @@ public class GraphServer {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        try {
+            new Server().runServer();
+            
+            // TODO code application logic here
+        } catch (IOException ex) {
+            Logger.getLogger(GraphServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

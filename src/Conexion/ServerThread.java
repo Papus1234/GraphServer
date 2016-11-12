@@ -20,16 +20,19 @@ public class ServerThread extends Thread{
         this.socket=socket;
         
         }
+    @Override
     public void run(){
         try{
+         System.out.println("Pasa por aqui");
         BufferedReader bufferedReader=new BufferedReader(
                 new InputStreamReader(socket.getInputStream()));
         String message=bufferedReader.readLine();
-        while (message=bufferedReader.readLine()!=null){
-            System.out.println("Llego mensaje");
+            System.out.println(message);
+        while ((message=bufferedReader.readLine())!=null){
+            System.out.println("Llego mensaje"+message);
             
         }
-        socket.close();
+        //socket.close();
         
         }catch(IOException e){
             e.printStackTrace();

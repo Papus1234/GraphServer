@@ -21,9 +21,9 @@ public class Server {
     public void runServer()throws IOException{
         ServerSocket serverSocket=new ServerSocket(Port);
         System.out.println("Servidor Listo ..");
-        while(1){
-        Socket socket=serverSocket.accept();
-        new ServerThread(socket).start();
+        while(true){
+            Socket socket=serverSocket.accept();
+            new ServerThread(socket).start();
         }
     }
     
