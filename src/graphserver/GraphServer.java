@@ -20,13 +20,7 @@ public class GraphServer {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try {
-            new Server().runServer();
-            
-            // TODO code application logic here
-        } catch (IOException ex) {
-            Logger.getLogger(GraphServer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        new Server().run();
     }
     
 }
