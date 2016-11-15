@@ -84,15 +84,19 @@ public class FrameServer extends javax.swing.JFrame {
          System.out.println("Pasa por aqui");
         BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
         while ((message=bufferedReader.readLine())!=null){
+            
             System.out.println(message);
             data=message.split(":");
             System.out.println(data[0]+"   "+data[2]);
             if (data[2].equals(connect)){
+                
                 userAdd(data[0]);
+                 tellEveryone((data[0] + ":" + data[1] + ":" + chat));
                 System.out.println(users.get(0));
             }
-            if (data[2].equals(chat)){
-                
+            if ( data[2].equals(chat)){
+                jTextArea1.append(data[0]+":"+data[1]+"\n");
+                tellEveryone(message);
             }
             System.out.println("Llego mensaje de "+data[0]+"si esta conectado"+data[2]);
             
@@ -102,9 +106,34 @@ public class FrameServer extends javax.swing.JFrame {
         }catch(IOException e){
             e.printStackTrace();
         }
-    }
+    }    
+    /*
+    Este metodo se usa el patron de observer se le manda un mensaje a todos los usuarios
     
-     public void userAdd(String data) {
+    */
+   // Este codigo de observer fue sacado de esta pagina  http://stackoverflow.com/questions/23905719/using-iterator-inside-a-method-with-arraylist
+     public void tellEveryone(String message){
+	Iterator it = clientOutputStreams.iterator();
+     
+        while (it.hasNext()) 
+        {
+            
+            try 
+            {
+                PrintWriter writer = (PrintWriter) it.next();
+                
+		writer.println(message);
+		System.out.println("Sending: " + message + "\n");
+                writer.flush();
+             
+            } 
+            catch (Exception ex) 
+            {
+		System.out.println("Error telling everyone. \n");
+            }
+        } 
+    }
+    public void userAdd(String data) {
         String message, add = ": :Connect", 
                 done = "Server: :Done", 
                 name = data;
@@ -117,28 +146,10 @@ public class FrameServer extends javax.swing.JFrame {
         for (String token:tempList) 
         {
             message = (token + add);
+            System.err.println(message);
             tellEveryone(message);
         }
         tellEveryone(done);
-    }
-     public void tellEveryone(String message){
-	Iterator it = clientOutputStreams.iterator();
-
-        while (it.hasNext()) 
-        {
-            try 
-            {
-                PrintWriter writer = (PrintWriter) it.next();
-		writer.println(message);
-		System.out.println("Sending: " + message + "\n");
-                writer.flush();
-             
-            } 
-            catch (Exception ex) 
-            {
-		System.out.println("Error telling everyone. \n");
-            }
-        } 
     }
     
 }
@@ -196,6 +207,11 @@ public class FrameServer extends javax.swing.JFrame {
 
         Clear.setText("Clear");
 
+        jComboBox1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jComboBox1FocusGained(evt);
+            }
+        });
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -241,28 +257,13 @@ public class FrameServer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        String []a=new String[users.size()];
-       // System.out.println("este es un item :"+a[0]);
-        
-         DefaultComboBoxModel model = new DefaultComboBoxModel(users.toArray(a));
-         jComboBox1.setModel(model);
+       
 
 // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        
-        if (users.size()==0){
-            String[] a=new String[1];
-        }
-        
-        String []a=new String[users.size()];
-        
-       // System.out.println("este es un item :"+a[0]);
-        
-        
-         DefaultComboBoxModel model = new DefaultComboBoxModel(users.toArray(a));
-         jComboBox1.setModel(model);
+      
 
 // TODO add your handling code here:
     }//GEN-LAST:event_formWindowOpened
@@ -284,6 +285,16 @@ public class FrameServer extends javax.swing.JFrame {
 
         // TODO add your handling code here:
     }//GEN-LAST:event_MostrarUsuariosActionPerformed
+
+    private void jComboBox1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboBox1FocusGained
+        String []a=new String[users.size()];
+       // System.out.println("este es un item :"+a[0]);
+        
+         DefaultComboBoxModel model = new DefaultComboBoxModel(users.toArray(a));
+         jComboBox1.setModel(model);
+         
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1FocusGained
     
     
     /**
