@@ -77,12 +77,16 @@ public class FrameServer extends javax.swing.JFrame {
         }
     @Override
     public void run(){
-        String message,connect = "Connect", disconnect = "Disconnect", chat = "Chat" ;
+        String message,connect = "Connect", 
+                disconnect = "Disconnect", 
+                chat = "Chat" ;
             
         String []data;
         try{
          System.out.println("Pasa por aqui");
-        BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        BufferedReader bufferedReader=new BufferedReader
+        (new InputStreamReader(socket.getInputStream()));
+        
         while ((message=bufferedReader.readLine())!=null){
             
             System.out.println(message);
@@ -95,8 +99,18 @@ public class FrameServer extends javax.swing.JFrame {
                 System.out.println(users.get(0));
             }
             if ( data[2].equals(chat)){
+                String[]aux=data[1].split("/");
                 jTextArea1.append(data[0]+":"+data[1]+"\n");
-                tellEveryone(message);
+                System.err.println("Esto es lo que va en mensaje"+message+"   "+aux[0]);
+                if (aux.length>1){
+                    System.err.println("Esto mensaje:"+data[0] + ":" + aux[0]+aux[1]+ ":" + chat);
+                
+                tellEveryone((data[0] + ":" + aux[0]+ ":" + chat),aux[1],data[0]);
+                }
+                else{
+                tellEveryone((data[0] + ":" + data[1]+ ":" + chat));
+                    
+                }
             }
             System.out.println("Llego mensaje de "+data[0]+"si esta conectado"+data[2]);
             
@@ -112,7 +126,38 @@ public class FrameServer extends javax.swing.JFrame {
     
     */
    // Este codigo de observer fue sacado de esta pagina  http://stackoverflow.com/questions/23905719/using-iterator-inside-a-method-with-arraylist
-     public void tellEveryone(String message){
+    public void tellEveryone(String message,String destinatario,String name){
+	Iterator it = clientOutputStreams.iterator();
+        int contador=0;
+        while (it.hasNext()) 
+        {
+            
+            try 
+            {
+            PrintWriter writer = (PrintWriter) it.next();
+            if (users.get(contador).equals(name)||users.get(contador).equals(destinatario)){    
+                
+                
+		writer.println(message);
+		System.out.println("Sending: " + message + "\n");
+                writer.flush();
+            
+                }
+            }
+            catch (Exception ex) 
+            {
+		System.out.println("Error telling everyone. \n");
+            }
+            
+            contador++;
+        } 
+    }
+    /*
+    Es un observer que manda el mensaje a todos los usuarios
+    @param  String message.
+    
+    */
+    public void tellEveryone(String message){
 	Iterator it = clientOutputStreams.iterator();
      
         while (it.hasNext()) 
@@ -175,6 +220,8 @@ public class FrameServer extends javax.swing.JFrame {
         MostrarUsuarios = new javax.swing.JButton();
         Clear = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
+        BGrafo = new javax.swing.JButton();
+        BArbol = new javax.swing.JButton();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -206,6 +253,11 @@ public class FrameServer extends javax.swing.JFrame {
         });
 
         Clear.setText("Clear");
+        Clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClearActionPerformed(evt);
+            }
+        });
 
         jComboBox1.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -217,6 +269,10 @@ public class FrameServer extends javax.swing.JFrame {
                 jComboBox1ActionPerformed(evt);
             }
         });
+
+        BGrafo.setText("MostrarGrafo");
+
+        BArbol.setText("Mostrar Arbol B");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -232,7 +288,11 @@ public class FrameServer extends javax.swing.JFrame {
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(58, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(29, 29, 29)
+                .addComponent(BGrafo)
+                .addGap(35, 35, 35)
+                .addComponent(BArbol)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Clear)
                 .addGap(20, 20, 20))
         );
@@ -249,7 +309,10 @@ public class FrameServer extends javax.swing.JFrame {
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37)
-                .addComponent(Clear)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Clear)
+                    .addComponent(BArbol)
+                    .addComponent(BGrafo))
                 .addContainerGap(49, Short.MAX_VALUE))
         );
 
@@ -295,6 +358,12 @@ public class FrameServer extends javax.swing.JFrame {
          
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1FocusGained
+
+    private void ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearActionPerformed
+        jTextArea1.setText("");
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ClearActionPerformed
     
     
     /**
@@ -334,6 +403,8 @@ public class FrameServer extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BArbol;
+    private javax.swing.JButton BGrafo;
     private javax.swing.JButton Clear;
     private javax.swing.JButton MostrarUsuarios;
     private javax.swing.ButtonGroup buttonGroup1;
