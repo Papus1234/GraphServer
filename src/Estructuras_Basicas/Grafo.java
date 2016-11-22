@@ -5,6 +5,9 @@
  */
 package Estructuras_Basicas;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author usuario
@@ -23,11 +26,11 @@ public class Grafo {
         matrizAd=new int[maxVertices][maxVertices];
         for(int i=0; i<maxVertices; i++){
             for(int j=0; j<maxVertices; j++){
-                matrizAd[i][j]=0;
+                matrizAd[i][j]=99999;
             }
         }
     }
-    
+   
     public int getIndice(Vertice v){
         for (int i=0; i< numVertices; i++){
             if(v.getNombre()== vertices[i].getNombre()){
@@ -73,7 +76,20 @@ public class Grafo {
             }
         }
     }
-    
+    public List<Vertice> obtenerArcos(){
+        List<Vertice>vert=new ArrayList<>();
+        
+        for (int i=0;i<this.matrizAd.length;i++){
+            for (int j=0;j<this.matrizAd.length;j++){
+                if (matrizAd[i][j]!=0){
+                    if (matrizAd[i][j]<99999){
+                        vert.add(this.vertices[i]);
+                    }
+                }
+            }
+        }
+        return vert;
+    }
     public void agregarArco(int peso, Vertice v1, Vertice v2){
        for(int i=0;i<numVertices; i++){
            if(v1.getNombre()== vertices[i].getNombre()){

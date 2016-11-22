@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Conexion;
+package GUI;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -98,7 +98,7 @@ public class FrameServer extends javax.swing.JFrame {
                  tellEveryone((data[0] + ":" + data[1] + ":" + chat));
                 System.out.println(users.get(0));
             }
-            if ( data[2].equals(chat)){
+            if (data[2].equals(chat)){
                 String[]aux=data[1].split("/");
                 jTextArea1.append(data[0]+":"+data[1]+"\n");
                 System.err.println("Esto es lo que va en mensaje"+message+"   "+aux[0]);
@@ -271,6 +271,11 @@ public class FrameServer extends javax.swing.JFrame {
         });
 
         BGrafo.setText("MostrarGrafo");
+        BGrafo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BGrafoActionPerformed(evt);
+            }
+        });
 
         BArbol.setText("Mostrar Arbol B");
 
@@ -364,6 +369,12 @@ public class FrameServer extends javax.swing.JFrame {
 
         // TODO add your handling code here:
     }//GEN-LAST:event_ClearActionPerformed
+
+    private void BGrafoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BGrafoActionPerformed
+        FrameGrafoVisualizer VisGrafo=new FrameGrafoVisualizer();
+            VisGrafo.setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BGrafoActionPerformed
     
     
     /**

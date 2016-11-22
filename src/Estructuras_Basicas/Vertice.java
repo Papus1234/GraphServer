@@ -20,4 +20,5 @@ public class Vertice {
     public char getNombre(){
         return nombre;
     }
+    
 }
