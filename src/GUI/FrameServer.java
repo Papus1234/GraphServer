@@ -88,7 +88,8 @@ public class FrameServer extends javax.swing.JFrame {
         (new InputStreamReader(socket.getInputStream()));
         
         while ((message=bufferedReader.readLine())!=null){
-            
+              jTextArea1.append("Received: " + message + "\n");
+                  
             System.out.println(message);
             data=message.split(":");
             System.out.println(data[0]+"   "+data[2]);
@@ -339,7 +340,7 @@ public class FrameServer extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
          Thread starter = new Thread(new Server());
         starter.start();
-        this.jTextArea1.append("Server started...\n");
+        this.jTextArea1.append("Server Iniciado...\n");
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 

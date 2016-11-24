@@ -76,20 +76,35 @@ public class Grafo {
             }
         }
     }
-    public List<Vertice> obtenerArcos(){
-        List<Vertice>vert=new ArrayList<>();
-        
+    public List<Vertice> darArrayVertices(){
+        List<Vertice> sandia=new ArrayList<>();
+        for (int i=0; i<this.vertices.length; i++){
+           if (this.vertices[i]!=null){
+               sandia.add(this.vertices[i]);
+           }
+            
+        }
+        return sandia;
+    }
+     public List<Arco> obtenerArcos(){
+        List<Arco>resp=new ArrayList <>();
         for (int i=0;i<this.matrizAd.length;i++){
             for (int j=0;j<this.matrizAd.length;j++){
                 if (matrizAd[i][j]!=0){
                     if (matrizAd[i][j]<99999){
-                        vert.add(this.vertices[i]);
+                        Vertice v1=this.vertices[i];
+                        Vertice v2=this.vertices[j];
+                        String peso=this.matrizAd[i][j]+"";
+                        resp.add(new Arco(v1, v2, peso));
+                        
                     }
                 }
             }
         }
-        return vert;
+        return resp;
     }
+     
+    
     public void agregarArco(int peso, Vertice v1, Vertice v2){
        for(int i=0;i<numVertices; i++){
            if(v1.getNombre()== vertices[i].getNombre()){

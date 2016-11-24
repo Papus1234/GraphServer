@@ -10,15 +10,19 @@ package Estructuras_Basicas;
  * @author usuario
  */
 public class Vertice {
-    char nombre;
-    
-    
-    public Vertice(char n){
-        nombre=n;
-    }
-    
-    public char getNombre(){
+    String nombre;
+
+    public String getNombre() {
         return nombre;
     }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Vertice(String nombre) {
+        this.nombre = nombre;
+    }
+    
     
 }
