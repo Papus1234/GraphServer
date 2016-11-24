@@ -83,6 +83,7 @@ public class FrameGrafoVisualizer extends JFrame{
                 g.agregarArco(3,g.vertices[0],g.vertices[1]);
                 
                 for (int i=1;i<=g.darArrayVertices().size();i++){
+                    
                     this.AdicionarGrafo(g.darArrayVertices().get(i-1).getNombre(),i*50,(i*50)-(i*20));
                     
                 }
