@@ -4,25 +4,23 @@
  * and open the template in the editor.
  */
 package Estructuras_Basicas;
-
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author usuario
  */
 public class Vertice {
     String nombre;
-
-    public String getNombre() {
+    public List<Arista> aristas = new ArrayList<Arista>();
+    
+    
+    
+    public Vertice(String n){
+        nombre=n;
+    }
+    
+    public String getNombre(){
         return nombre;
     }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Vertice(String nombre) {
-        this.nombre = nombre;
-    }
-    
-    
 }

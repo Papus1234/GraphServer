@@ -86,16 +86,16 @@ public class Grafo {
         }
         return sandia;
     }
-     public List<Arco> obtenerArcos(){
-        List<Arco>resp=new ArrayList <>();
+     public List<Arista> obtenerArcos(){
+        List<Arista>resp=new ArrayList <>();
         for (int i=0;i<this.matrizAd.length;i++){
             for (int j=0;j<this.matrizAd.length;j++){
                 if (matrizAd[i][j]!=0){
                     if (matrizAd[i][j]<99999){
                         Vertice v1=this.vertices[i];
                         Vertice v2=this.vertices[j];
-                        String peso=this.matrizAd[i][j]+"";
-                        resp.add(new Arco(v1, v2, peso));
+                        int peso=this.matrizAd[i][j];
+                        resp.add(new Arista(peso, v1,v2));
                         
                     }
                 }
@@ -111,6 +111,7 @@ public class Grafo {
                for(int j=0;j<numVertices; j++){
                    if(v2.getNombre()== vertices[j].getNombre()){
                        matrizAd[i][j]=peso;
+                       Arista aux= new Arista(peso, v1, v2);
                    }
                }
            }
