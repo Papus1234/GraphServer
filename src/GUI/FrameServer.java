@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import Conexion.Server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,7 +25,7 @@ import javax.swing.DefaultComboBoxModel;
 public class FrameServer extends javax.swing.JFrame {
     ArrayList clientOutputStreams;
     ArrayList<String> users=new ArrayList<>();
-    
+    Server server;
     /**
      * Creates new form FrameServer
      */
@@ -33,172 +34,172 @@ public class FrameServer extends javax.swing.JFrame {
         this.jComboBox1.addItem("Seleccione Usuario");
     }
 /////////////////Clases del servidor //// para manejar todo mas sencillo 
-    public class Server implements Runnable{
-    public int Port=4444;
-    public Server(){
-    clientOutputStreams=new ArrayList();
-    }
-    
-    @Override
-    public void run(){
-        ServerSocket serverSocket;
-        try {
-            serverSocket = new ServerSocket(Port);
-        
-        System.out.println("Servidor Listo ..");
-        while(true){
-            Socket socket=serverSocket.accept();
-            PrintWriter writer=new PrintWriter(socket.getOutputStream());
-            clientOutputStreams.add(writer);
-           // Thread listener = new Thread(new ClientHandler(clientSock, writer,users,clientOutputStreams));
-		//	listener.start();
-                
-            Thread listener=new Thread(new ServerThread(socket));
-            listener.start();
-		
-        }
-        } catch (IOException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-}
-    
-    
-    
-//////////////////77Aca termina server///////////////7   
-    
-    
-////Clase del ServerThread //////////////////    
-    public class ServerThread implements Runnable{
-    Socket socket;
-    public ServerThread(Socket socket){
-        this.socket=socket;
-        }
-    @Override
-    public void run(){
-        String message,connect = "Connect", 
-                disconnect = "Disconnect", 
-                chat = "Chat" ;
-            
-        String []data;
-        try{
-         System.out.println("Pasa por aqui");
-        BufferedReader bufferedReader=new BufferedReader
-        (new InputStreamReader(socket.getInputStream()));
-        
-        while ((message=bufferedReader.readLine())!=null){
-              jTextArea1.append("Received: " + message + "\n");
-                  
-            System.out.println(message);
-            data=message.split(":");
-            System.out.println(data[0]+"   "+data[2]);
-            if (data[2].equals(connect)){
-                
-                userAdd(data[0]);
-                 tellEveryone((data[0] + ":" + data[1] + ":" + chat));
-                System.out.println(users.get(0));
-            }
-            if (data[2].equals(chat)){
-                String[]aux=data[1].split("/");
-                jTextArea1.append(data[0]+":"+data[1]+"\n");
-                System.err.println("Esto es lo que va en mensaje"+message+"   "+aux[0]);
-                if (aux.length>1){
-                    System.err.println("Esto mensaje:"+data[0] + ":" + aux[0]+aux[1]+ ":" + chat);
-                
-                tellEveryone((data[0] + ":" + aux[0]+ ":" + chat),aux[1],data[0]);
-                }
-                else{
-                tellEveryone((data[0] + ":" + data[1]+ ":" + chat));
-                    
-                }
-            }
-            System.out.println("Llego mensaje de "+data[0]+"si esta conectado"+data[2]);
-            
-        }
-        //socket.close();
-        
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-    }    
-    /*
-    Este metodo se usa el patron de observer se le manda un mensaje a todos los usuarios
-    
-    */
-   // Este codigo de observer fue sacado de esta pagina  http://stackoverflow.com/questions/23905719/using-iterator-inside-a-method-with-arraylist
-    public void tellEveryone(String message,String destinatario,String name){
-	Iterator it = clientOutputStreams.iterator();
-        int contador=0;
-        while (it.hasNext()) 
-        {
-            
-            try 
-            {
-            PrintWriter writer = (PrintWriter) it.next();
-            if (users.get(contador).equals(name)||users.get(contador).equals(destinatario)){    
-                
-                
-		writer.println(message);
-		System.out.println("Sending: " + message + "\n");
-                writer.flush();
-            
-                }
-            }
-            catch (Exception ex) 
-            {
-		System.out.println("Error telling everyone. \n");
-            }
-            
-            contador++;
-        } 
-    }
-    /*
-    Es un observer que manda el mensaje a todos los usuarios
-    @param  String message.
-    
-    */
-    public void tellEveryone(String message){
-	Iterator it = clientOutputStreams.iterator();
-     
-        while (it.hasNext()) 
-        {
-            
-            try 
-            {
-                PrintWriter writer = (PrintWriter) it.next();
-                
-		writer.println(message);
-		System.out.println("Sending: " + message + "\n");
-                writer.flush();
-             
-            } 
-            catch (Exception ex) 
-            {
-		System.out.println("Error telling everyone. \n");
-            }
-        } 
-    }
-    public void userAdd(String data) {
-        String message, add = ": :Connect", 
-                done = "Server: :Done", 
-                name = data;
-         System.out.println("Before " + name + " added. \n");
-            users.add(name);
-        System.out.println("After " + name + " added. \n");
-        String[] tempList = new String[(users.size())];
-        users.toArray(tempList);
-
-        for (String token:tempList) 
-        {
-            message = (token + add);
-            System.err.println(message);
-            tellEveryone(message);
-        }
-        tellEveryone(done);
-    }
-    
-}
+//    public class Server implements Runnable{
+//    public int Port=4444;
+//    public Server(){
+//    clientOutputStreams=new ArrayList();
+//    }
+//    
+//    @Override
+//    public void run(){
+//        ServerSocket serverSocket;
+//        try {
+//            serverSocket = new ServerSocket(Port);
+//        
+//        System.out.println("Servidor Listo ..");
+//        while(true){
+//            Socket socket=serverSocket.accept();
+//            PrintWriter writer=new PrintWriter(socket.getOutputStream());
+//            clientOutputStreams.add(writer);
+//           // Thread listener = new Thread(new ClientHandler(clientSock, writer,users,clientOutputStreams));
+//		//	listener.start();
+//                
+//            Thread listener=new Thread(new ServerThread(socket));
+//            listener.start();
+//		
+//        }
+//        } catch (IOException ex) {
+//            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+//    
+//}
+//    
+//    
+//    
+////////////////////77Aca termina server///////////////7   
+//    
+//    
+//////Clase del ServerThread //////////////////    
+//    public class ServerThread implements Runnable{
+//    Socket socket;
+//    public ServerThread(Socket socket){
+//        this.socket=socket;
+//        }
+//    @Override
+//    public void run(){
+//        String message,connect = "Connect", 
+//                disconnect = "Disconnect", 
+//                chat = "Chat" ;
+//            
+//        String []data;
+//        try{
+//         System.out.println("Pasa por aqui");
+//        BufferedReader bufferedReader=new BufferedReader
+//        (new InputStreamReader(socket.getInputStream()));
+//        
+//        while ((message=bufferedReader.readLine())!=null){
+//              jTextArea1.append("Received: " + message + "\n");
+//                  
+//            System.out.println(message);
+//            data=message.split(":");
+//            System.out.println(data[0]+"   "+data[2]);
+//            if (data[2].equals(connect)){
+//                
+//                userAdd(data[0]);
+//                tellEveryone((data[0] + ":" + data[1] + ":" + chat));
+//                System.out.println(users.get(0));
+//            }
+//            if (data[2].equals(chat)){
+//                String[]aux=data[1].split("/");
+//                jTextArea1.append(data[0]+":"+data[1]+"\n");
+//                System.err.println("Esto es lo que va en mensaje"+message+"   "+aux[0]);
+//                if (aux.length>1){
+//                    System.err.println("Esto mensaje:"+data[0] + ":" + aux[0]+aux[1]+ ":" + chat);
+//                
+//                tellEveryone((data[0] + ":" + aux[0]+ ":" + chat),aux[1],data[0]);
+//                }
+//                else{
+//                tellEveryone((data[0] + ":" + data[1]+ ":" + chat));
+//                    
+//                }
+//            }
+//            System.out.println("Llego mensaje de "+data[0]+"si esta conectado"+data[2]);
+//            
+//        }
+//        //socket.close();
+//        
+//        }catch(IOException e){
+//            e.printStackTrace();
+//        }
+//    }    
+//    /*
+//    Este metodo se usa el patron de observer se le manda un mensaje a todos los usuarios
+//    
+//    */
+//   // Este codigo de observer fue sacado de esta pagina  http://stackoverflow.com/questions/23905719/using-iterator-inside-a-method-with-arraylist
+//    public void tellEveryone(String message,String destinatario,String name){
+//	Iterator it = clientOutputStreams.iterator();
+//        int contador=0;
+//        while (it.hasNext()) 
+//        {
+//            
+//            try 
+//            {
+//            PrintWriter writer = (PrintWriter) it.next();
+//            if (users.get(contador).equals(name)||users.get(contador).equals(destinatario)){    
+//                
+//                
+//		writer.println(message);
+//		System.out.println("Sending: " + message + "\n");
+//                writer.flush();
+//            
+//                }
+//            }
+//            catch (Exception ex) 
+//            {
+//		System.out.println("Error telling everyone. \n");
+//            }
+//            
+//            contador++;
+//        } 
+//    }
+//    /*
+//    Es un observer que manda el mensaje a todos los usuarios
+//    @param  String message.
+//    
+//    */
+//    public void tellEveryone(String message){
+//	Iterator it = clientOutputStreams.iterator();
+//     
+//        while (it.hasNext()) 
+//        {
+//            
+//            try 
+//            {
+//                PrintWriter writer = (PrintWriter) it.next();
+//                
+//		writer.println(message);
+//		System.out.println("Sending: " + message + "\n");
+//                writer.flush();
+//             
+//            } 
+//            catch (Exception ex) 
+//            {
+//		System.out.println("Error telling everyone. \n");
+//            }
+//        } 
+//    }
+//    public void userAdd(String data) {
+//        String message, add = ": :Connect", 
+//                done = "Server: :Done", 
+//                name = data;
+//         System.out.println("Before " + name + " added. \n");
+//            users.add(name);
+//        System.out.println("After " + name + " added. \n");
+//        String[] tempList = new String[(users.size())];
+//        users.toArray(tempList);
+//
+//        for (String token:tempList) 
+//        {
+//            message = (token + add);
+//            System.err.println(message);
+//            tellEveryone(message);
+//        }
+//        tellEveryone(done);
+//    }
+//    
+//}
 
     
     
@@ -338,7 +339,8 @@ public class FrameServer extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-         Thread starter = new Thread(new Server());
+        server=new Server(jTextArea1,users); 
+        Thread starter = new Thread(server);
         starter.start();
         this.jTextArea1.append("Server Iniciado...\n");
         // TODO add your handling code here:

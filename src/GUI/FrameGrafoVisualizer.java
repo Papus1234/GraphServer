@@ -81,6 +81,7 @@ public class FrameGrafoVisualizer extends JFrame{
                 g.agregarVertice(new Vertice("a"));
                 g.agregarVertice(new Vertice("b"));
                 g.agregarArco(3,g.vertices[0],g.vertices[1]);
+                g.agregarArco(3,g.vertices[1],g.vertices[0]);
                 
                 for (int i=1;i<=g.darArrayVertices().size();i++){
                     
@@ -90,6 +91,7 @@ public class FrameGrafoVisualizer extends JFrame{
                 for (int i=0;i<g.obtenerArcos().size();i++){
                     Arco aux=g.obtenerArcos().get(i);
                     this.AdicionarArco(aux.getV1().getNombre(),aux.getV2().getNombre(),aux.getPeso());
+                    
                 }
              //   List<Vertices>
                 

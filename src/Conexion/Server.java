@@ -5,23 +5,35 @@
  */
 package Conexion;
 
+import Estructuras_Basicas.Grafo;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextArea;
 
 /**
  *
  * @author Roberto
  */
-public class Server implements Runnable{
+    
+/////////////////Clases del servidor //// para manejar todo mas sencillo 
+    public class Server implements Runnable{
     ArrayList clientOutputStreams;
+    Grafo grafo;
+    ArrayList<String> users;
+    JTextArea jtxt;
     public int Port=4444;
-    public Server(){
+    public Server(JTextArea jtex,ArrayList<String>users){
     clientOutputStreams=new ArrayList();
+    this.jtxt=jtex;
+    this.users=users;
+    
     }
     
     @Override
@@ -29,7 +41,9 @@ public class Server implements Runnable{
         ServerSocket serverSocket;
         try {
             serverSocket = new ServerSocket(Port);
-        
+            String ip=Inet4Address.getLocalHost().getHostAddress();
+            System.out.println(ip);
+            
         System.out.println("Servidor Listo ..");
         while(true){
             Socket socket=serverSocket.accept();
@@ -38,7 +52,7 @@ public class Server implements Runnable{
            // Thread listener = new Thread(new ClientHandler(clientSock, writer,users,clientOutputStreams));
 		//	listener.start();
                 
-            Thread listener=new Thread(new ServerThread(socket,clientOutputStreams));
+            Thread listener=new Thread(new ServerThread(socket, jtxt, users, clientOutputStreams));
             listener.start();
 		
         }
@@ -46,5 +60,11 @@ public class Server implements Runnable{
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+     public ArrayList<String> getUsers() {
+        return users;
+    }
+
+    public void setUsers(ArrayList<String> users) {
+        this.users = users;
+    }
 }
