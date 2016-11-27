@@ -6,6 +6,7 @@
 package Conexion;
 
 import Estructuras_Basicas.Grafo;
+import Objetos.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Inet4Address;
@@ -26,10 +27,14 @@ import javax.swing.JTextArea;
     public class Server implements Runnable{
     ArrayList clientOutputStreams;
     Grafo grafo;
+    //LIstas ///
+    //ArrayList<Usuario>Usuarios;
     ArrayList<String> users;
+    ////  Listas fin ///
     JTextArea jtxt;
     public int Port=4444;
-    public Server(JTextArea jtex,ArrayList<String>users){
+    public Server(JTextArea jtex,ArrayList<String>users,Grafo g){
+    this.grafo=g;
     clientOutputStreams=new ArrayList();
     this.jtxt=jtex;
     this.users=users;
@@ -41,8 +46,8 @@ import javax.swing.JTextArea;
         ServerSocket serverSocket;
         try {
             serverSocket = new ServerSocket(Port);
-            String ip=Inet4Address.getLocalHost().getHostAddress();
-            System.out.println(ip);
+           // String ip=Inet4Address.getLocalHost().getHostAddress();
+            //System.out.println(ip);
             
         System.out.println("Servidor Listo ..");
         while(true){
@@ -52,7 +57,7 @@ import javax.swing.JTextArea;
            // Thread listener = new Thread(new ClientHandler(clientSock, writer,users,clientOutputStreams));
 		//	listener.start();
                 
-            Thread listener=new Thread(new ServerThread(socket, jtxt, users, clientOutputStreams));
+            Thread listener=new Thread(new ServerThread(socket, jtxt, users, clientOutputStreams,grafo));
             listener.start();
 		
         }
@@ -67,4 +72,13 @@ import javax.swing.JTextArea;
     public void setUsers(ArrayList<String> users) {
         this.users = users;
     }
+    
+    public Grafo getGrafo() {
+        return grafo;
+    }
+
+    public void setGrafo(Grafo grafo) {
+        this.grafo = grafo;
+    }
+
 }

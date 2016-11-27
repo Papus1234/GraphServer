@@ -1,6 +1,4 @@
-package BTree;
-import BTree.Entry.*;
-import BTree.Node.*;
+package Estructuras_Basicas.BTree;
 
 
 
@@ -90,6 +88,7 @@ public class BTree<Key extends Comparable<Key>, Value>  {
 	     * @param  val the value
 	     * @throws IllegalArgumentException if {@code key} is {@code null}
 	     */
+            
 	    public void put(Key key, Value val) {
 	        if (key == null) throw new IllegalArgumentException("argument key to put() is null");
 	        Node u = insert(root, key, val, height); 

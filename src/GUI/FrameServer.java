@@ -6,6 +6,7 @@
 package GUI;
 
 import Conexion.Server;
+import Estructuras_Basicas.Grafo;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,6 +27,7 @@ public class FrameServer extends javax.swing.JFrame {
     ArrayList clientOutputStreams;
     ArrayList<String> users=new ArrayList<>();
     Server server;
+    Grafo grafo=new Grafo(33);
     /**
      * Creates new form FrameServer
      */
@@ -339,7 +341,7 @@ public class FrameServer extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        server=new Server(jTextArea1,users); 
+        server=new Server(jTextArea1,users,grafo); 
         Thread starter = new Thread(server);
         starter.start();
         this.jTextArea1.append("Server Iniciado...\n");
@@ -374,7 +376,7 @@ public class FrameServer extends javax.swing.JFrame {
     }//GEN-LAST:event_ClearActionPerformed
 
     private void BGrafoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BGrafoActionPerformed
-        FrameGrafoVisualizer VisGrafo=new FrameGrafoVisualizer();
+        FrameGrafoVisualizer VisGrafo=new FrameGrafoVisualizer(grafo);
             VisGrafo.setVisible(true);
         // TODO add your handling code here:
     }//GEN-LAST:event_BGrafoActionPerformed

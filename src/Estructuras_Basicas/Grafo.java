@@ -86,6 +86,37 @@ public class Grafo {
         }
         return sandia;
     }
+    public void hacerArcosRandom(String nomb){
+        List<Vertice>listV=darArrayVertices();
+        int numeroConexiones = (int) (Math.random()*listV.size()+1);
+        int VerticeDestino = (int) (Math.random()*listV.size()-1+0);
+        int PesoRand = (int) (Math.random()*10+1);
+         
+        
+        for (int i=0; i<numeroConexiones; i++){
+             VerticeDestino = (int)(Math.random()*listV.size()-1+0);
+             System.out.println("Este numeRand:"+VerticeDestino+"Este el len de la lista"+darArrayVertices().size());
+            this.agregarArco(PesoRand,vertices[buscarVertice(nomb)],vertices[VerticeDestino]);
+        }
+    }
+    public int buscarVertice(String nomb){
+        for (int i=0; i<this.vertices.length; i++){
+            if (vertices[i].getNombre().equals(nomb)){
+                return i;
+            }
+        }
+        System.err.println("No se encontro el vertice");
+        return 0;
+    }
+    public Vertice buscarVerticeV(String nomb){
+        for (int i=0; i<this.vertices.length; i++){
+            if (vertices[i].getNombre().equals(nomb)){
+                return vertices[i];
+            }
+        }
+        System.err.println("No se encontro el vertice");
+        return vertices[0];
+    }
      public List<Arista> obtenerArcos(){
         List<Arista>resp=new ArrayList <>();
         for (int i=0;i<this.matrizAd.length;i++){
@@ -112,6 +143,7 @@ public class Grafo {
                    if(v2.getNombre()== vertices[j].getNombre()){
                        matrizAd[i][j]=peso;
                        Arista aux= new Arista(peso, v1, v2);
+                      // vertices[i].aristas.add(aux);
                    }
                }
            }

@@ -5,12 +5,16 @@
  */
 package Conexion;
 
+import Estructuras_Basicas.Grafo;
+import Estructuras_Basicas.Vertice;
+import Objetos.Mensaje;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JTextArea;
@@ -24,11 +28,13 @@ import javax.swing.JTextArea;
        JTextArea jTextArea1;
        List<String>users;
        ArrayList clientOutputStreams;
-    public ServerThread(Socket socket,JTextArea a,List<String>Users,ArrayList clientOutputStreams){
+       Grafo g;
+    public ServerThread(Socket socket,JTextArea a,List<String>Users,ArrayList clientOutputStreams,Grafo g){
         this.clientOutputStreams=clientOutputStreams;
         this.users=Users;
         this.socket=socket;
         this.jTextArea1=a;
+        this.g=g;
         }
     @Override
     public void run(){
@@ -50,7 +56,11 @@ import javax.swing.JTextArea;
             System.out.println(data[0]+"   "+data[2]);
             
             if (data[2].equals(connect)){
+                //Inserta en el grafo 
+                this.g.agregarVertice(new Vertice(data[0]));
+                this.g.hacerArcosRandom(data[0]);
                 
+                //
                 userAdd(data[0]);
                 tellEveryone((data[0] + ":" + data[1] + ":" + chat));
                 System.out.println(users.get(0));
@@ -61,6 +71,9 @@ import javax.swing.JTextArea;
                 System.err.println("Esto es lo que va en mensaje"+message+"   "+aux[0]);
                 if (aux.length>1){
                     System.err.println("Esto mensaje:"+data[0] + ":" + aux[0]+aux[1]+ ":" + chat);
+                Date date =new Date();
+                
+                g.buscarVerticeV(data[0]).getListMsj().add(new Mensaje(data[0], aux[0], aux[1],new Date(date.getTime())));
                 
                 tellEveryone((data[0] + ":" + aux[0]+ ":" + chat),aux[1],data[0]);
                 }

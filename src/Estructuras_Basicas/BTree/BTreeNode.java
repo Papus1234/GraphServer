@@ -1,4 +1,4 @@
- package BTree;
+ package Estructuras_Basicas.BTree;
 
 public class BTreeNode{
 	
