@@ -74,39 +74,39 @@ public class Dijkstra {
                 }
         for(Arista arista : from.aristas){
             Camino newRuta = new Camino();//se crea un nuevo camino donde se va a trabajar
-            if(camino!=null){
-                if(camino.aristas.contains(arista)){
-                    continue;
+            if(camino!=null){//si ya existe un camino
+                if(camino.aristas.contains(arista)){//se busca si ya la arista se encuentra en el camino
+                    continue;//si es así, cotinua con las demás aristas
                 }
-                newRuta.aristas.addAll(camino.aristas);
-                newRuta.PesoCam += camino.PesoCam;
+                newRuta.aristas.addAll(camino.aristas);//agrega todas las aristas del camino existente
+                newRuta.PesoCam += camino.PesoCam;//al peso de el nuevo camino se le suman las del camino existente
             }
             if(analyzedPaths.get(orig.nombre +from ) != null && analyzedPaths.get(orig.nombre +from )  < newRuta.PesoCam){
-                continue;
+                continue;//si la ruta guardada no es nula y su peso es menor a la ruta actual continua con la siguiente arista
             }
-            analyzedPaths.put(orig.nombre +from , newRuta.PesoCam);
-            newRuta.aristas.add(arista);
-            newRuta.PesoCam += arista.peso;
-            if(arista.segundoVertice.nombre.equals(dest.nombre)){
-                if(ruta == null || ruta.PesoCam > newRuta.PesoCam){
-                    ruta = newRuta;
+            analyzedPaths.put(orig.nombre +from , newRuta.PesoCam);//si el peso de la ruta es mayor o no exite ruta, la ruta actual se guardará como la menor
+            newRuta.aristas.add(arista);//a la nueva ruta se le agrera la arista actual
+            newRuta.PesoCam += arista.peso;//al peso de la ruta, se le suma el peso de la arista
+            if(arista.segundoVertice.nombre.equals(dest.nombre)){//si donde se dirige la arista es el destino entra
+                if(ruta == null || ruta.PesoCam > newRuta.PesoCam){//si la ruta es nula o el peso es mayor a la ruta actual
+                    ruta = newRuta;//la ruta final será igual a la ruta actual
                 }
             }
-            from=arista.segundoVertice;
-            ruta(dest, newRuta);
+            from=arista.segundoVertice;//el inicio será ahora el destino de la arista
+            ruta(dest, newRuta);//se llama recursivamente la función
         }
     }
     
-    public int minimo(){
-        int aux=99999;
-        int v=1;
+    public int minimo(){//calcula el vertice de menor distancia
+        int aux=99999;//representa el infinito
+        int v=1;//comienza en el índice 1
         for(int j=0;  j<numVertices; j++){
-            if(!VertVisit[j] && CostoMin[j]<=aux){
-                aux=CostoMin[j];
-                v=j;
+            if(!VertVisit[j] && CostoMin[j]<=aux){//Si el vertice no ha sido visitado y el costo mínimo a ese vertice es menor a infinito
+                aux=CostoMin[j];//el auxiliar será igual a su costo mínimo
+                v=j;//el índice mínimo será j
             }
         }
         
-        return v;
+        return v;//retorna el índice del mínimo
     }
 }
