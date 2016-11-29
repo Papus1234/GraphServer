@@ -13,6 +13,7 @@ import java.util.List;
  * @author usuario
  */
 public class Camino {
+     public List<Vertice> vertices=new ArrayList<Vertice>();
      public List<Arista> aristas = new ArrayList<Arista>();
      public int PesoCam;
 }
