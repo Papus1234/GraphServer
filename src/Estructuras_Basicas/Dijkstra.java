@@ -70,7 +70,10 @@ public class Dijkstra {
     
     public void ruta(Vertice dest, Camino camino){ //calcula la ruta más corta del origen hacia otro nodo, funciona recursivamente
         if(from.nombre.equals(dest.nombre)){//detiene el ciclo si el vertice es igual al vertice de llegada
-                        return;
+            for(int i=0; i<ruta.aristas.size(); i++){//adhiere vertices de la ruta
+                 ruta.vertices.add(i,ruta.aristas.get(i).segundoVertice);
+            }          
+            return;
                 }
         for(Arista arista : from.aristas){
             Camino newRuta = new Camino();//se crea un nuevo camino donde se va a trabajar
