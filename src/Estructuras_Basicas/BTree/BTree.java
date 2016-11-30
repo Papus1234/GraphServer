@@ -1,6 +1,6 @@
-package BTree;
+package Estructuras_Basicas.BTree;
 
-import BTree.Node;
+import Estructuras_Basicas.BTree.Node;
 
 public class BTree<Key extends Comparable<Key>, Value>  {
     // max children per B-tree node = M-1
@@ -9,7 +9,7 @@ public class BTree<Key extends Comparable<Key>, Value>  {
     private Node root;       // root of the B-tree
     private int height;      // height of the B-tree
     private int n;           // number of key-value pairs in the B-tree
-
+    
     /**
      * Initializes an empty B-tree.
      */

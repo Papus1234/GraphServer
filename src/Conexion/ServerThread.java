@@ -5,6 +5,8 @@
  */
 package Conexion;
 
+import Estructuras_Basicas.BTree.BTree;
+import Estructuras_Basicas.Dijkstra;
 import Estructuras_Basicas.Grafo;
 import Estructuras_Basicas.Vertice;
 import Objetos.Mensaje;
@@ -29,7 +31,16 @@ import javax.swing.JTextArea;
        List<String>users;
        ArrayList clientOutputStreams;
        Grafo g;
+       BTree ArbB;
     public ServerThread(Socket socket,JTextArea a,List<String>Users,ArrayList clientOutputStreams,Grafo g){
+        this.clientOutputStreams=clientOutputStreams;
+        this.users=Users;
+        this.socket=socket;
+        this.jTextArea1=a;
+        this.g=g;
+        }
+     public ServerThread(Socket socket,JTextArea a,List<String>Users,ArrayList clientOutputStreams,Grafo g,BTree Arb){
+         this.ArbB=Arb;
         this.clientOutputStreams=clientOutputStreams;
         this.users=Users;
         this.socket=socket;
@@ -64,6 +75,7 @@ import javax.swing.JTextArea;
                 userAdd(data[0]);
                 tellEveryone((data[0] + ":" + data[1] + ":" + chat));
                 System.out.println(users.get(0));
+            
             }
             if (data[2].equals(chat)){
                 String[]aux=data[1].split("/");
@@ -71,9 +83,23 @@ import javax.swing.JTextArea;
                 System.err.println("Esto es lo que va en mensaje"+message+"   "+aux[0]);
                 if (aux.length>1){
                     System.err.println("Esto mensaje:"+data[0] + ":" + aux[0]+aux[1]+ ":" + chat);
-                Date date =new Date();
+                ////Dijkistra/////
                 
-                g.buscarVerticeV(data[0]).getListMsj().add(new Mensaje(data[0], aux[0], aux[1],new Date(date.getTime())));
+                Dijkstra dij=new Dijkstra(g.buscarVerticeV(data[0]), g);
+                    System.err.println("---aaaaa---");
+                dij.ruta(g.buscarVerticeV(aux[1]), null);
+                
+                for(int i=0;i<dij.ruta.aristas.size();i++){
+                    System.err.println("Disjistra: "+dij.ruta.aristas.get(i).getV2().getNombre());
+                }
+                ////      ////
+                
+                Date date =new Date();
+                Mensaje msj=new Mensaje(data[0], aux[0], aux[1],new Date(date.getTime()),dij.ruta.aristas);
+                
+                g.buscarVerticeV(data[0]).getListMsj().add(msj);
+                
+             //   ArbB.put("esto",msj );
                 
                 tellEveryone((data[0] + ":" + aux[0]+ ":" + chat),aux[1],data[0]);
                 }
@@ -81,6 +107,11 @@ import javax.swing.JTextArea;
                 tellEveryone((data[0] + ":" + data[1]+ ":" + chat));
                     
                 }
+                if (data[2].equals(disconnect)) 
+                    {
+                        tellEveryone((data[0] + ":has disconnected." + ":" + chat));
+                        userRemove(data[0]);
+                    }
             }
             System.out.println("Llego mensaje de "+data[0]+"si esta conectado"+data[2]);
             
@@ -144,6 +175,20 @@ import javax.swing.JTextArea;
             }
         } 
     }
+    public void userRemove (String data) {
+        String message, add = ": :Connect", done = "Server: :Done", name = data;
+        users.remove(name);
+        String[] tempList = new String[(users.size())];
+        users.toArray(tempList);
+
+        for (String token:tempList) 
+        {
+            message = (token + add);
+            tellEveryone(message);
+        }
+        tellEveryone(done);
+    }
+    
     public void userAdd(String data) {
         String message, add = ": :Connect", 
                 done = "Server: :Done", 

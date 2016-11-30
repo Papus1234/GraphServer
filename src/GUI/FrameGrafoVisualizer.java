@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -57,11 +58,20 @@ public class FrameGrafoVisualizer extends JFrame{
                 btnVerMsj.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        String aux="";
+                        if (CeldaSeleccionada!=null){
                         List<Mensaje>msj=g.buscarVerticeV(CeldaSeleccionada).getListMsj();
-                        
+                        if(msj.size()>0){
                         for (int i=0;i<msj.size();i++){
-                            System.err.println(msj.get(i).getAutor()+":"+msj.get(i).getMensaje()+" destinatario:"+msj.get(i).getDestinatario());
+                            
+                            
+                            aux+=(msj.get(i).getAutor()+":"+msj.get(i).getMensaje()+" ,Destinatario:"+msj.get(i).getDestinatario()+"Dijkistra:"+msj.get(i).darDijistra()+"\n");
                         }
+                        }else{
+                            aux="Su usuario seleccionado no tiene mensajes enviados";
+                        }
+                        }
+                        JOptionPane.showMessageDialog(graphComponent, aux, "Lista de Mensajes", HEIGHT);
                     }
                 });
                 

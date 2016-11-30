@@ -5,6 +5,7 @@
  */
 package Conexion;
 
+import Estructuras_Basicas.BTree.BTree;
 import Estructuras_Basicas.Grafo;
 import Objetos.Usuario;
 import java.io.IOException;
@@ -27,13 +28,15 @@ import javax.swing.JTextArea;
     public class Server implements Runnable{
     ArrayList clientOutputStreams;
     Grafo grafo;
+    BTree ArbB;
     //LIstas ///
     //ArrayList<Usuario>Usuarios;
     ArrayList<String> users;
     ////  Listas fin ///
     JTextArea jtxt;
     public int Port=4444;
-    public Server(JTextArea jtex,ArrayList<String>users,Grafo g){
+    public Server(JTextArea jtex,ArrayList<String>users,Grafo g,BTree Arb){
+    this.ArbB=Arb;    
     this.grafo=g;
     clientOutputStreams=new ArrayList();
     this.jtxt=jtex;
@@ -57,7 +60,7 @@ import javax.swing.JTextArea;
            // Thread listener = new Thread(new ClientHandler(clientSock, writer,users,clientOutputStreams));
 		//	listener.start();
                 
-            Thread listener=new Thread(new ServerThread(socket, jtxt, users, clientOutputStreams,grafo));
+            Thread listener=new Thread(new ServerThread(socket, jtxt, users, clientOutputStreams,grafo,ArbB));
             listener.start();
 		
         }

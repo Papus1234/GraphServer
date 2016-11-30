@@ -90,13 +90,16 @@ public class Grafo {
         List<Vertice>listV=darArrayVertices();
         int numeroConexiones = (int) (Math.random()*listV.size()+1);
         int VerticeDestino = (int) (Math.random()*listV.size()-1+0);
-        int PesoRand = (int) (Math.random()*10+1);
+        int PesoRand = (int) (Math.random()*100+1);
          
         
         for (int i=0; i<numeroConexiones; i++){
              VerticeDestino = (int)(Math.random()*listV.size()-1+0);
-             System.out.println("Este numeRand:"+VerticeDestino+"Este el len de la lista"+darArrayVertices().size());
+             
+            System.out.println("Este numeRand:"+VerticeDestino+"Este el len de la lista"+darArrayVertices().size());
             this.agregarArco(PesoRand,vertices[buscarVertice(nomb)],vertices[VerticeDestino]);
+            PesoRand = (int) (Math.random()*100+1);
+             
         }
     }
     public int buscarVertice(String nomb){

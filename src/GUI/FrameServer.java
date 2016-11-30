@@ -6,7 +6,9 @@
 package GUI;
 
 import Conexion.Server;
+import Estructuras_Basicas.BTree.BTree;
 import Estructuras_Basicas.Grafo;
+import Objetos.Mensaje;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,6 +30,7 @@ public class FrameServer extends javax.swing.JFrame {
     ArrayList<String> users=new ArrayList<>();
     Server server;
     Grafo grafo=new Grafo(33);
+    BTree<String,Mensaje> ArbB=new BTree<>();
     /**
      * Creates new form FrameServer
      */
@@ -341,7 +344,7 @@ public class FrameServer extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        server=new Server(jTextArea1,users,grafo); 
+        server=new Server(jTextArea1,users,grafo,ArbB); 
         Thread starter = new Thread(server);
         starter.start();
         this.jTextArea1.append("Server Iniciado...\n");
