@@ -1,6 +1,8 @@
-package Estructuras_Basicas.BTree;
+package BTree;
 
-import Estructuras_Basicas.BTree.Node;
+import java.util.ArrayList;
+
+import BTree.Node;
 
 public class BTree<Key extends Comparable<Key>, Value>  {
     // max children per B-tree node = M-1
@@ -9,7 +11,7 @@ public class BTree<Key extends Comparable<Key>, Value>  {
     private Node root;       // root of the B-tree
     private int height;      // height of the B-tree
     private int n;           // number of key-value pairs in the B-tree
-    
+
     /**
      * Initializes an empty B-tree.
      */
@@ -166,6 +168,35 @@ public class BTree<Key extends Comparable<Key>, Value>  {
             }
         }
         return s.toString();
+    }
+    public ArrayList StringSeacrh(String x){
+    	return  StringSearch_V(root, x, height);    	
+    }
+    
+    public ArrayList StringSearch_V(Node ON, String Find, int n){
+    	Entry[] children = ON.children;
+    	ArrayList END = new ArrayList();
+        // external node
+        if (n == 0) {
+            for (int j = 0; j < ON.m; j++){
+            	String TEMP = children[j].val.toString();
+            	if (TEMP.contains(Find)){
+            		END.add(TEMP);
+            	}
+            }
+        }
+        else {
+        	for (int j = 0; j < ON.m; j++) {
+                if (j+1 == ON.m){
+                	return StringSearch_V(children[j].next, Find, n-1);
+                }
+            }
+        }
+        return END;
+
+        // internal node
+        
+    	
     }
 
 

@@ -1,4 +1,4 @@
-package Estructuras_Basicas.BTree;
+package BTree;
 
 
 // helper B-tree node data type

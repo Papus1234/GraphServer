@@ -1,6 +1,6 @@
-package Estructuras_Basicas.BTree;
+package BTree;
 
-import Estructuras_Basicas.BTree.Node;
+import BTree.Node;
 
 //internal nodes: only use key and next
 // external nodes: only use key and value
